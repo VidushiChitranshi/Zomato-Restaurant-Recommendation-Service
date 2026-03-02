@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zomato AI - Restaurant Recommendations</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="background"></div>
+
+    <header>
+        <div class="container">
+            <h1 class="logo">ZOMATO <span>AI</span></h1>
+            <p class="subtitle">Smart Restaurant Recommendations Powered by Groq</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Input Section -->
+        <section class="search-card">
+            <form id="recommend-form">
+                <div class="input-group">
+                    <label for="location">Location</label>
+                    <select id="location" required>
+                        <option value="" disabled selected>Select a location</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="max-price">Max price for two (₹)</label>
+                    <input type="number" id="max-price" placeholder="e.g. 1000" required min="1" max="10000">
+                </div>
+                <div class="form-group">
+                    <label for="result-limit">Number of Results: <span id="limit-val">10</span></label>
+                    <input type="range" id="result-limit" min="3" max="20" value="10" class="slider">
+                </div>
+                <button type="submit" id="search-btn">Find Restaurants</button>
+            </form>
+        </section>
+
+        <!-- Loading State -->
+        <div id="loader" class="hidden">
+            <div class="spinner"></div>
+            <p>Gathering recommendations...</p>
+        </div>
+
+        <!-- AI Summary Section -->
+        <section id="ai-section" class="hidden">
+            <div class="section-header">
+                <span class="badge">AI Summary</span>
+            </div>
+            <div class="ai-card">
+                <p id="ai-text"></p>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section id="results-section" class="hidden">
+            <div class="section-header">
+                <span class="badge">Top Matches</span>
+            </div>
+            <div id="results-grid" class="results-grid">
+                <!-- Cards injected by main.js -->
+            </div>
+        </section>
+
+        <!-- No Results State -->
+        <div id="empty-state" class="hidden">
+            <p>No restaurants matching your criteria were found. Please try a different location or price range.</p>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Zomato Recommendation Service | Phase 6 Web</p>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+
+</html>

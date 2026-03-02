@@ -1,0 +1,9 @@
+pandas
+datasets
+pytest
+python-dotenv
+groq
+fastapi
+uvicorn
+google-genai
+streamlit
