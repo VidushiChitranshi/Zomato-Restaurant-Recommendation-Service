@@ -1,6 +1,7 @@
 import pandas as pd
 from datasets import load_dataset
 import logging
+import os
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
@@ -87,7 +88,15 @@ class ZomatoLoader:
     def get_structured_data(self, export_csv: bool = False, output_path: str = "cleaned_zomato.csv") -> pd.DataFrame:
         """
         Orchestration method for Phase 1.
+        Favors local CSV if it exists to speed up deployment/loading.
         """
+        # Check if local cleaned data exists
+        if os.path.exists(output_path):
+            logger.info(f"Loading data from local cache: {output_path}")
+            return pd.read_csv(output_path)
+
+        # Fallback to Hugging Face if local file not found
+        logger.info("Local data not found. Downloading from Hugging Face...")
         raw_df = self.load_data()
         clean_df = self.clean_data(raw_df)
         structured_df = clean_df[self.REQUIRED_COLUMNS]
