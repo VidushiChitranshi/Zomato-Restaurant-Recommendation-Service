@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import patch
-from phase_2_input.input_handler import InputHandler
+from app.phase_2_input.input_handler import InputHandler
 
 def test_get_location_valid():
     handler = InputHandler(valid_locations=["Indiranagar"])

@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
 from unittest.mock import MagicMock, patch
-from phase_4_llm.gemini_client import GoogleAIRecommendationClient
+from app.phase_4_llm.gemini_client import GoogleAIRecommendationClient
 
 @pytest.fixture
 def sample_recommendations():

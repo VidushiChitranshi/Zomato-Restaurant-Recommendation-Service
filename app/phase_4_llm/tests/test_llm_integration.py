@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
 import os
-from phase_4_llm.gemini_client import GoogleAIRecommendationClient
+from app.phase_4_llm.gemini_client import GoogleAIRecommendationClient
 
 # These tests will run against the REAL Google AI Studio API
 # Ensure GOOGLE_API_KEY is set in phase_4_llm/.env

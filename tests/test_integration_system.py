@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
 from unittest.mock import patch, MagicMock
-from app import main
+from app.main_cli import main
 
 # Integration tests for the full system flow
 # We mock external dependencies like data loading and LLM API to ensure deterministic tests
@@ -16,9 +16,9 @@ def mock_zomato_data():
         "cuisines": ["Italian", "North Indian"]
     })
 
-@patch('app.ZomatoLoader')
-@patch('app.InputHandler')
-@patch('app.GroqRecommendationClient')
+@patch('app.main_cli.ZomatoLoader')
+@patch('app.main_cli.InputHandler')
+@patch('app.main_cli.GoogleAIRecommendationClient')
 def test_full_system_flow_happy_path(mock_llm_class, mock_input_class, mock_loader_class, mock_zomato_data, capsys):
     """Test 1: Full successful chain from input to display."""
     
@@ -46,9 +46,9 @@ def test_full_system_flow_happy_path(mock_llm_class, mock_input_class, mock_load
     assert "AI says:" in captured
     assert "Rating: 4.5/5" in captured
 
-@patch('app.ZomatoLoader')
-@patch('app.InputHandler')
-@patch('app.GroqRecommendationClient')
+@patch('app.main_cli.ZomatoLoader')
+@patch('app.main_cli.InputHandler')
+@patch('app.main_cli.GoogleAIRecommendationClient')
 def test_system_no_results(mock_llm_class, mock_input_class, mock_loader_class, mock_zomato_data, capsys):
     """Test 2: System behavior when no restaurants match."""
     
@@ -67,9 +67,9 @@ def test_system_no_results(mock_llm_class, mock_input_class, mock_loader_class, 
     # LLM should not be called
     mock_llm_class.return_value.generate_summary.assert_not_called()
 
-@patch('app.ZomatoLoader')
-@patch('app.InputHandler')
-@patch('app.GroqRecommendationClient')
+@patch('app.main_cli.ZomatoLoader')
+@patch('app.main_cli.InputHandler')
+@patch('app.main_cli.GoogleAIRecommendationClient')
 def test_system_llm_failure_resilience(mock_llm_class, mock_input_class, mock_loader_class, mock_zomato_data, capsys):
     """Test 3: System resilience when LLM fails but search works."""
     

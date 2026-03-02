@@ -7,9 +7,9 @@ from datetime import datetime
 # Add root to sys.path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from phase_1_data.dataset_loader import ZomatoLoader
-from phase_3_search.search_engine import RestaurantSearchEngine
-from phase_4_llm.gemini_client import GoogleAIRecommendationClient
+from app.phase_1_data.dataset_loader import ZomatoLoader
+from app.phase_3_search.search_engine import RestaurantSearchEngine
+from app.phase_4_llm.gemini_client import GoogleAIRecommendationClient
 
 # Page Config
 st.set_page_config(

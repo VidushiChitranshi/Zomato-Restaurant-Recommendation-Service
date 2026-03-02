@@ -1,6 +1,6 @@
 import pytest
 import pandas as pd
-from phase_3_search.search_engine import RestaurantSearchEngine
+from app.phase_3_search.search_engine import RestaurantSearchEngine
 
 @pytest.fixture
 def sample_data():

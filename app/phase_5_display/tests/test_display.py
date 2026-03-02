@@ -1,6 +1,6 @@
 import pytest
 import pandas as pd
-from phase_5_display.formatter import RestaurantFormatter
+from app.phase_5_display.formatter import RestaurantFormatter
 
 @pytest.fixture
 def sample_recommendations():

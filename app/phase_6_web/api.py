@@ -1,7 +1,8 @@
 import os
 import sys
 
-# Add the project root to sys.path to resolve local imports (e.g., phase_1_data)
+# Add the project root and app directory to sys.path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import logging
@@ -10,9 +11,9 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from typing import List
 
-from phase_1_data.dataset_loader import ZomatoLoader
-from phase_3_search.search_engine import RestaurantSearchEngine
-from phase_4_llm.gemini_client import GoogleAIRecommendationClient
+from app.phase_1_data.dataset_loader import ZomatoLoader
+from app.phase_3_search.search_engine import RestaurantSearchEngine
+from app.phase_4_llm.gemini_client import GoogleAIRecommendationClient
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
@@ -89,7 +90,7 @@ async def recommend(request: RecommendationRequest):
         raise HTTPException(status_code=500, detail="An error occurred while generating recommendations.")
 
 # Mount static files
-static_path = os.path.join(os.getcwd(), "phase_6_web", "static")
+static_path = os.path.join(os.getcwd(), "app", "phase_6_web", "static")
 if not os.path.exists(static_path):
     # Fallback to relative if cwd is already in phase_6_web
     static_path = os.path.join(os.path.dirname(__file__), "static")

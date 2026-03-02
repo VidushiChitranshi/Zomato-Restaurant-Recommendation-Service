@@ -119,7 +119,7 @@ class InputHandler:
 
 if __name__ == "__main__":
     # Quick sanity check
-    from phase_1_data.dataset_loader import ZomatoLoader
+    from app.phase_1_data.dataset_loader import ZomatoLoader
     
     try:
         loader = ZomatoLoader()

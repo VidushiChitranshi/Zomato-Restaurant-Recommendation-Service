@@ -1,10 +1,16 @@
 import logging
 import sys
-from phase_1_data.dataset_loader import ZomatoLoader
-from phase_2_input.input_handler import InputHandler
-from phase_3_search.search_engine import RestaurantSearchEngine
-from phase_4_llm.gemini_client import GoogleAIRecommendationClient
-from phase_5_display.formatter import RestaurantFormatter
+import os
+
+# Add the project root and app directory to sys.path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+from app.phase_1_data.dataset_loader import ZomatoLoader
+from app.phase_2_input.input_handler import InputHandler
+from app.phase_3_search.search_engine import RestaurantSearchEngine
+from app.phase_4_llm.gemini_client import GoogleAIRecommendationClient
+from app.phase_5_display.formatter import RestaurantFormatter
 
 # Configure logging
 logging.basicConfig(

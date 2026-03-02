@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
 from unittest.mock import patch, MagicMock
-from phase_1_data.dataset_loader import ZomatoLoader
+from app.phase_1_data.dataset_loader import ZomatoLoader
 
 @pytest.fixture
 def mock_raw_data():
@@ -55,7 +55,7 @@ def test_null_handling_essential():
     # Both rows should be dropped because name or location is null
     assert len(clean_df) == 0
 
-@patch("phase_1_data.dataset_loader.load_dataset")
+@patch("app.phase_1_data.dataset_loader.load_dataset")
 def test_load_data_success(mock_load):
     # Mocking the datasets.load_dataset return value
     mock_dataset = MagicMock()
