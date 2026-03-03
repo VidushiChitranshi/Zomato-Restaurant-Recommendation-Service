@@ -116,9 +116,19 @@ if search_clicked:
                 # AI Summary Layer
                 st.subheader("🤖 AI Culinary Insight")
                 with st.spinner("Groq is analyzing the matches..."):
+                # AI Summary Layer
+                st.subheader("🤖 AI Culinary Insight")
+                with st.spinner("Groq is analyzing the matches..."):
                     ai_data = llm_client.generate_summary(results_df)
-                    overall_summary = ai_data.get("overall_summary", "AI summary unavailable.")
-                    individual_summaries = ai_data.get("individual_summaries", {})
+                    
+                    # Robust handling for different return types (string vs dict)
+                    if isinstance(ai_data, dict):
+                        overall_summary = ai_data.get("overall_summary", "AI summary unavailable.")
+                        individual_summaries = ai_data.get("individual_summaries", {})
+                    else:
+                        # Fallback for string response
+                        overall_summary = str(ai_data)
+                        individual_summaries = {}
                     
                     if "QUOTA_EXCEEDED" in overall_summary:
                         st.warning("⏱️ **AI Summary is taking a breather.** You've reached the free tier limit for Groq API. Please wait about a minute and try again!")
