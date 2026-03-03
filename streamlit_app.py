@@ -81,8 +81,17 @@ def get_zomato_components():
     df = loader.get_structured_data()
     search_engine = RestaurantSearchEngine()
     
-    # Explicitly check st.secrets for Groq API Key (Streamlit Cloud best practice)
-    api_key = st.secrets.get("GROQ_API_KEY")
+    # Robust API Key Loading
+    # 1. Try environment variables first (local .env)
+    api_key = os.getenv("GROQ_API_KEY")
+    
+    # 2. Try st.secrets if not found (Streamlit Cloud)
+    if not api_key:
+        try:
+            api_key = st.secrets.get("GROQ_API_KEY")
+        except Exception:
+            # st.secrets might raise an error if secrets.toml is missing locally
+            api_key = None
     
     llm_client = GroqRecommendationClient(api_key=api_key)
     return df, search_engine, llm_client
