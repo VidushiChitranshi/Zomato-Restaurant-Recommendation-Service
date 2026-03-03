@@ -116,9 +116,6 @@ if search_clicked:
                 # AI Summary Layer
                 st.subheader("🤖 AI Culinary Insight")
                 with st.spinner("Groq is analyzing the matches..."):
-                # AI Summary Layer
-                st.subheader("🤖 AI Culinary Insight")
-                with st.spinner("Groq is analyzing the matches..."):
                     ai_data = llm_client.generate_summary(results_df)
                     
                     # Robust handling for different return types (string vs dict)
