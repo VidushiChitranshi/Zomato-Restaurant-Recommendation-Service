@@ -9,11 +9,11 @@ import logging
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
-from typing import List
+from typing import List, Dict, Optional
 
 from app.phase_1_data.dataset_loader import ZomatoLoader
 from app.phase_3_search.search_engine import RestaurantSearchEngine
-from app.phase_4_llm.gemini_client import GoogleAIRecommendationClient
+from app.phase_4_llm.groq_client import GroqRecommendationClient
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
@@ -24,7 +24,7 @@ app = FastAPI(title="Zomato Recommendation Service API")
 # Global instances for reuse
 loader = ZomatoLoader()
 search_engine = RestaurantSearchEngine()
-llm_client = GoogleAIRecommendationClient()
+llm_client = GroqRecommendationClient()
 
 # Cache the dataset in memory
 df = loader.get_structured_data()
@@ -43,7 +43,8 @@ class RestaurantInfo(BaseModel):
 
 class RecommendationResponse(BaseModel):
     restaurants: List[RestaurantInfo]
-    ai_summary: str
+    overall_summary: str
+    individual_summaries: Dict[str, str]
 
 @app.get("/api/locations")
 async def get_locations():
@@ -77,13 +78,18 @@ async def recommend(request: RecommendationRequest):
                 location=row['location']
             ))
             
-        ai_summary = ""
+        overall_summary = ""
+        individual_summaries = {}
+        
         if restaurants:
-            ai_summary = llm_client.generate_summary(results_df)
+            ai_data = llm_client.generate_summary(results_df)
+            overall_summary = ai_data.get("overall_summary", "")
+            individual_summaries = ai_data.get("individual_summaries", {})
         
         return RecommendationResponse(
             restaurants=restaurants,
-            ai_summary=ai_summary
+            overall_summary=overall_summary,
+            individual_summaries=individual_summaries
         )
     except Exception as e:
         logger.error(f"Error generating recommendations: {e}")

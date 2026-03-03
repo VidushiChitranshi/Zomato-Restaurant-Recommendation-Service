@@ -11,12 +11,21 @@ class RestaurantFormatter:
     Formats the final restaurant list and AI narrative for display.
     """
 
-    def format_results(self, recommendations: pd.DataFrame, ai_summary: str) -> str:
+    def format_results(self, recommendations: pd.DataFrame, ai_data: Any) -> str:
         """
         Combines the restaurant list and AI summary into a pretty-printed string.
+        `ai_data` can be a string (legacy) or a dict with 'overall_summary' and 'individual_summaries'.
         """
         if recommendations.empty:
             return "No restaurants matching your criteria were found. Please try a different location or price range."
+
+        # Parse ai_data
+        if isinstance(ai_data, dict):
+            overall_summary = ai_data.get("overall_summary", "")
+            individual_summaries = ai_data.get("individual_summaries", {})
+        else:
+            overall_summary = str(ai_data)
+            individual_summaries = {}
 
         output = []
         output.append("\n" + "="*50)
@@ -24,17 +33,24 @@ class RestaurantFormatter:
         output.append("="*50 + "\n")
 
         for i, (_, row) in enumerate(recommendations.iterrows(), 1):
-            output.append(f"{i}. {row['name'].upper()}")
+            resto_name = row['name']
+            output.append(f"{i}. {resto_name.upper()}")
             output.append(f"   Rating: {row['rate']}/5")
             output.append(f"   Cuisine: {row['cuisines']}")
             output.append(f"   Approx. Cost (2 people): Rs.{row['approx_cost(for two people)']}")
             output.append(f"   Location: {row['location']}")
+            
+            # Add individual insight if available
+            insight = individual_summaries.get(resto_name)
+            if insight:
+                output.append(f"   ✨ Insight: {insight}")
+                
             output.append("-" * 30)
 
         output.append("\n" + "*"*50)
-        output.append("   AI CONTEXT & SUMMARY")
+        output.append("   AI CONTEXT & OVERALL SUMMARY")
         output.append("*"*50)
-        output.append(ai_summary)
+        output.append(overall_summary)
         output.append("*"*50 + "\n")
 
         return "\n".join(output)

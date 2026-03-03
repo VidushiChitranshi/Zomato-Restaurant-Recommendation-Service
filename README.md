@@ -1,10 +1,10 @@
 # 🍴 Zomato AI Restaurant Recommendation Service
 
-A professional, modular Python application that provides personalized restaurant suggestions using the [ManikaSaini/zomato-restaurant-recommendation](https://huggingface.co/datasets/ManikaSaini/zomato-restaurant-recommendation) dataset and **Google Gemini AI**.
+A professional, modular Python application that provides personalized restaurant suggestions using the [ManikaSaini/zomato-restaurant-recommendation](https://huggingface.co/datasets/ManikaSaini/zomato-restaurant-recommendation) dataset and **Groq AI (Llama 3)**.
 
 ## 🚀 Experience the App
 - **Live Demo**: [zomato-ai.streamlit.app](#) *(Deploy using the steps below)*
-- **Core Tech**: Streamlit, FastAPI, Google Gemini API, Pandas, Hugging Face Datasets.
+- **Core Tech**: Streamlit, FastAPI, Groq API, Pandas, Hugging Face Datasets.
 
 ---
 
@@ -20,7 +20,7 @@ Zomato_Service/
 │   ├── phase_1_data/       # Data Acquisition (Hugging Face)
 │   ├── phase_2_input/      # Input Handling & Validation
 │   ├── phase_3_search/     # Search & Filtering Engine
-│   ├── phase_4_llm/        # Google Gemini AI Integration
+│   ├── phase_4_llm/        # Groq AI Integration
 │   ├── phase_5_display/    # Formatters & UI Logic
 │   └── phase_6_web/        # FastAPI Backend & Web UI
 ├── tests/                  # 🧪 Integration Tests
@@ -34,7 +34,7 @@ Zomato_Service/
 
 ### 1. Prerequisites
 - Python 3.9+
-- A Google AI Studio API Key ([Get one here](https://aistudio.google.com/))
+- A Groq Cloud API Key ([Get one here](https://console.groq.com/))
 
 ### 2. Installation
 ```bash
@@ -49,7 +49,7 @@ pip install -r requirements.txt
 ### 3. Configuration
 Create a `.env` file in the root directory:
 ```env
-GOOGLE_API_KEY=your_gemini_api_key_here
+GROQ_API_KEY=your_groq_api_key_here
 ```
 
 ### 4. Running the Applications
@@ -79,9 +79,9 @@ pytest
 To deploy this service on Streamlit Community Cloud:
 1. Connect your GitHub repository to [Streamlit Cloud](https://share.streamlit.io/).
 2. Set the Main File Path to `streamlit_app.py`.
-3. **Advanced Settings**: Add your `GOOGLE_API_KEY` to the **Secrets** section:
+3. **Advanced Settings**: Add your `GROQ_API_KEY` to the **Secrets** section:
    ```toml
-   GOOGLE_API_KEY = "your_key_here"
+   GROQ_API_KEY = "your_key_here"
    ```
 
 ---

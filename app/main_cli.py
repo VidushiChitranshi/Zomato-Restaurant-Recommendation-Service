@@ -9,7 +9,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from app.phase_1_data.dataset_loader import ZomatoLoader
 from app.phase_2_input.input_handler import InputHandler
 from app.phase_3_search.search_engine import RestaurantSearchEngine
-from app.phase_4_llm.gemini_client import GoogleAIRecommendationClient
+from app.phase_4_llm.groq_client import GroqRecommendationClient
 from app.phase_5_display.formatter import RestaurantFormatter
 
 # Configure logging
@@ -36,7 +36,7 @@ def main():
         valid_locations = df["location"].dropna().unique().tolist()
         input_handler = InputHandler(valid_locations=valid_locations)
         search_engine = RestaurantSearchEngine()
-        llm_client = GoogleAIRecommendationClient()
+        llm_client = GroqRecommendationClient()
         formatter = RestaurantFormatter()
 
         while True:

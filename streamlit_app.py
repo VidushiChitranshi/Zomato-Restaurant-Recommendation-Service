@@ -9,7 +9,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from app.phase_1_data.dataset_loader import ZomatoLoader
 from app.phase_3_search.search_engine import RestaurantSearchEngine
-from app.phase_4_llm.gemini_client import GoogleAIRecommendationClient
+from app.phase_4_llm.groq_client import GroqRecommendationClient
 
 # Page Config
 st.set_page_config(
@@ -80,7 +80,7 @@ def get_components():
     loader = ZomatoLoader()
     df = loader.get_structured_data()
     search_engine = RestaurantSearchEngine()
-    llm_client = GoogleAIRecommendationClient()
+    llm_client = GroqRecommendationClient()
     return df, search_engine, llm_client
 
 df, search_engine, llm_client = get_components()
@@ -115,14 +115,17 @@ if search_clicked:
             else:
                 # AI Summary Layer
                 st.subheader("🤖 AI Culinary Insight")
-                with st.spinner("Gemini is analyzing the matches..."):
-                    ai_summary = llm_client.generate_summary(results_df)
-                    if "QUOTA_EXCEEDED" in ai_summary:
-                        st.warning("⏱️ **AI Summary is taking a breather.** You've reached the free tier limit for Gemini API. Please wait about a minute and try again!")
+                with st.spinner("Groq is analyzing the matches..."):
+                    ai_data = llm_client.generate_summary(results_df)
+                    overall_summary = ai_data.get("overall_summary", "AI summary unavailable.")
+                    individual_summaries = ai_data.get("individual_summaries", {})
+                    
+                    if "QUOTA_EXCEEDED" in overall_summary:
+                        st.warning("⏱️ **AI Summary is taking a breather.** You've reached the free tier limit for Groq API. Please wait about a minute and try again!")
                     else:
                         st.markdown(f"""
                             <div class="ai-summary-box">
-                                {ai_summary}
+                                {overall_summary}
                             </div>
                         """, unsafe_allow_html=True)
                 
@@ -131,15 +134,20 @@ if search_clicked:
                 
                 # Display Results in Cards
                 for _, row in results_df.iterrows():
+                    resto_name = row['name']
+                    insight = individual_summaries.get(resto_name, "")
+                    insight_html = f'<div style="margin-top: 10px; font-style: italic; color: #ff4b4b; font-size: 0.85rem;">✨ <b>Insight:</b> {insight}</div>' if insight else ""
+                    
                     st.markdown(f"""
                         <div class="resto-card">
                             <div style="display: flex; justify-content: space-between; align-items: start;">
-                                <div class="resto-name">{row['name']}</div>
+                                <div class="resto-name">{resto_name}</div>
                                 <div class="rating-badge">⭐ {row['rate']}</div>
                             </div>
                             <div class="resto-meta">
                                 <b>Cuisines:</b> {row['cuisines']}<br>
                                 <b>Cost for 2:</b> ₹{row['approx_cost(for two people)']}
+                                {insight_html}
                             </div>
                         </div>
                     """, unsafe_allow_html=True)
