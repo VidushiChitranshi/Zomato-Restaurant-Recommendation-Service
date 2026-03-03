@@ -76,14 +76,14 @@ st.markdown("""
 
 # Initialize Components
 @st.cache_resource
-def get_components():
+def get_zomato_components():
     loader = ZomatoLoader()
     df = loader.get_structured_data()
     search_engine = RestaurantSearchEngine()
     llm_client = GroqRecommendationClient()
     return df, search_engine, llm_client
 
-df, search_engine, llm_client = get_components()
+df, search_engine, llm_client = get_zomato_components()
 
 # Sidebar Inputs
 with st.sidebar:
@@ -97,6 +97,13 @@ with st.sidebar:
     
     limit = st.number_input("Number of Recommendations", min_value=3, max_value=20, value=10)
     
+    # API Status Check
+    if not llm_client.api_key:
+        st.error("🔑 GROQ_API_KEY missing!")
+        st.caption("Please add it to your Streamlit Secrets or .env file.")
+    else:
+        st.success("🤖 Groq AI Ready")
+        
     search_clicked = st.button("Find My Next Meal 🚀")
 
 # Main Content
