@@ -49,6 +49,7 @@ class GroqRecommendationClient:
 
         # Use up to 5 recommendations for context
         top_recommendations = recommendations.head(5)
+        logger.info(f"Generating summary for {len(top_recommendations)} restaurants using Groq...")
         prompt = self._build_prompt(top_recommendations)
         
         try:
