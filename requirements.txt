@@ -1,4 +1,4 @@
-pandas
+pandas>=2.0.0
 datasets
 pytest
 python-dotenv
@@ -6,4 +6,4 @@ groq
 fastapi
 uvicorn
 google-genai
-streamlit
+streamlit>=1.35.0
