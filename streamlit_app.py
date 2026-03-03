@@ -80,7 +80,11 @@ def get_zomato_components():
     loader = ZomatoLoader()
     df = loader.get_structured_data()
     search_engine = RestaurantSearchEngine()
-    llm_client = GroqRecommendationClient()
+    
+    # Explicitly check st.secrets for Groq API Key (Streamlit Cloud best practice)
+    api_key = st.secrets.get("GROQ_API_KEY")
+    
+    llm_client = GroqRecommendationClient(api_key=api_key)
     return df, search_engine, llm_client
 
 df, search_engine, llm_client = get_zomato_components()
